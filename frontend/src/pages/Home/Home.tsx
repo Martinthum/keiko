@@ -2,7 +2,7 @@ import styles from "./Home.module.css"
 import { Pokemon } from "../../components/Pokemon"
 import { Loader } from "../../components/Loader"
 import React, { useEffect, useState } from "react"
-import { Link } from "react-router-dom"
+import { useParams, Link } from "react-router-dom"
 
 export const Home = () => {
   interface PokemonInfo {
@@ -27,8 +27,15 @@ export const Home = () => {
     filterPokemonsByName(pokemonList, pokemonFilterValue)
   }
 
+  const params = useParams()
+  const page: string = params.page || ""
+  const pageup: boolean = parseInt(page) < 10
+  const pagedown: boolean = parseInt(page) > 0
+
   const fetchPokemons = async () => {
-    const response = await fetch("http://localhost:8000/pokemons", { headers: { accept: "application/json" } })
+    const url = "http://localhost:8000/pokemons?page=" + page
+    console.log(url)
+    const response = await fetch(url, { headers: { accept: "application/json" } })
     /*throw new Error("oh, no!")*/
     setIsLoaded(true)
     return response.json()
@@ -39,7 +46,7 @@ export const Home = () => {
       .catch(() => console.log("arg"))
       .then(pokemonData => updatePokemonList(pokemonData))
     setTimeout(() => setIsLoading(false), 100)
-  }, [])
+  }, [page])
 
   return (
     <div className={styles.intro}>
@@ -47,6 +54,9 @@ export const Home = () => {
       <div>Tu vas pouvoir apprendre tout ce qu'il faut sur React et attraper des pokemons !</div>
       <input className={styles.input} onChange={onInputChange} value={pokemonFilterValue} />
       <h1>Pokédex</h1>
+      {pagedown ? <Link to={`/pokedex/${+page - 1}`}>←</Link> : <div></div>}
+      {pageup ? <Link to={`/pokedex/${+page + 1}`}>→</Link> : <div></div>}
+
       <div className="pokedex">
         {isLoading ? (
           <Loader />

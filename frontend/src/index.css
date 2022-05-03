@@ -6,7 +6,7 @@ body {
   font-family: "PokemonGB";
 }
 .pokemon {
-  flex-basis: 20%;
+  flex-basis: 17%;
   text-align: center;
   border: solid;
   border-style: double;

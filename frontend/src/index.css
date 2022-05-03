@@ -5,8 +5,12 @@
 body {
   font-family: "PokemonGB";
 }
-.pokemon {
+
+.pokedexBox {
   flex-basis: 17%;
+}
+
+.pokemon {
   text-align: center;
   border: solid;
   border-style: double;

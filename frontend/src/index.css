@@ -18,3 +18,12 @@ body {
   flex-flow: row wrap;
   justify-content: center;
 }
+
+.pokemonContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.pokemonDetails {
+  text-align: center;
+}

@@ -5,11 +5,6 @@ import React, { useEffect, useState } from "react"
 import { ReactIntlErrorCode } from "react-intl"
 
 export const Home = () => {
-  interface Pokemon {
-    name: string
-    id: number
-  }
-
   interface PokemonInfo {
     id: number
     name: string
@@ -21,7 +16,7 @@ export const Home = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [pokemonList, updatePokemonList] = React.useState<PokemonInfo[]>([])
 
-  const filterPokemonsByName = (pokemons: Pokemon[], name: string) => {
+  const filterPokemonsByName = (pokemons: PokemonInfo[], name: string) => {
     const filteredList = pokemons.filter(pokemon => pokemon.name.includes(name))
     return filteredList
   }
@@ -32,10 +27,9 @@ export const Home = () => {
   }
 
   const filteredList = filterPokemonsByName(pokemonList, pokemonFilterValue)
-  const fetchPokemons = () => {
-    return fetch("http://localhost:8000/pokemons", { headers: { accept: "application/json" } }).then(response =>
-      response.json(),
-    )
+  const fetchPokemons = async () => {
+    const response = await fetch("http://localhost:8000/pokemons", { headers: { accept: "application/json" } })
+    return response.json()
   }
 
   useEffect(() => {
@@ -48,14 +42,16 @@ export const Home = () => {
       <div>Bienvenue sur ton futur pokédex !</div>
       <div>Tu vas pouvoir apprendre tout ce qu'il faut sur React et attraper des pokemons !</div>
       <input className={styles.input} onChange={onInputChange} value={pokemonFilterValue} />
-
-      {isLoading ? (
-        <Loader />
-      ) : (
-        filteredList.map(({ name, id }) => {
-          return <Pokemon name={name} number={id} key={id} />
-        })
-      )}
+      <h1>Pokédex</h1>
+      <div className="pokedex">
+        {isLoading ? (
+          <Loader />
+        ) : (
+          filteredList.map(({ name, id, height, weight }) => {
+            return <Pokemon name={name} number={id} height={height} weight={weight} key={id} />
+          })
+        )}
+      </div>
     </div>
   )
 }

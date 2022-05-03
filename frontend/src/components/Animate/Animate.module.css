@@ -57,6 +57,8 @@
 }
 
 .tadaAnimation {
+  flex-basis: 17%;
+
   animation-duration: 500ms;
   animation-fill-mode: both;
   animation-name: tada;

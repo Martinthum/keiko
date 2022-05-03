@@ -62,7 +62,11 @@ export const Home = () => {
           <Loader />
         ) : isLoaded ? (
           pokemonList.map(({ name, id, height, weight }) => {
-            return <Pokemon name={name} number={id} height={height} weight={weight} key={id} />
+            return (
+              <div className="pokedexBox" key={id}>
+                <Pokemon name={name} number={id} height={height} weight={weight} />
+              </div>
+            )
           })
         ) : (
           <p>Erreur de chargement</p>

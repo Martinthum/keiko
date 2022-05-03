@@ -2,3 +2,19 @@
   font-family: "PokemonGB";
   src: local("PokemonGB"), url("./fonts/PokemonGb-RAeo.ttf") format("truetype");
 }
+body {
+  font-family: "PokemonGB";
+}
+.pokemon {
+  flex-basis: 20%;
+  text-align: center;
+  border: solid;
+  border-style: double;
+}
+
+.pokedex {
+  display: flex;
+  gap: 20px;
+  flex-flow: row wrap;
+  justify-content: center;
+}

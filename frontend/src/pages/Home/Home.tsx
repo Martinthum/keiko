@@ -2,7 +2,7 @@ import styles from "./Home.module.css"
 import { Pokemon } from "../../components/Pokemon"
 import { Loader } from "../../components/Loader"
 import React, { useEffect, useState } from "react"
-import { ReactIntlErrorCode } from "react-intl"
+import { Link } from "react-router-dom"
 
 export const Home = () => {
   interface PokemonInfo {
@@ -14,27 +14,31 @@ export const Home = () => {
 
   const [pokemonFilterValue, setFilterValue] = useState("")
   const [isLoading, setIsLoading] = useState(true)
+  const [isLoaded, setIsLoaded] = useState(false)
   const [pokemonList, updatePokemonList] = React.useState<PokemonInfo[]>([])
 
   const filterPokemonsByName = (pokemons: PokemonInfo[], name: string) => {
-    const filteredList = pokemons.filter(pokemon => pokemon.name.includes(name))
-    return filteredList
+    updatePokemonList(pokemons.filter(pokemon => pokemon.name.includes(name)))
   }
 
   const onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     console.log(event.target.value)
     setFilterValue(event.target.value)
+    filterPokemonsByName(pokemonList, pokemonFilterValue)
   }
 
-  const filteredList = filterPokemonsByName(pokemonList, pokemonFilterValue)
   const fetchPokemons = async () => {
     const response = await fetch("http://localhost:8000/pokemons", { headers: { accept: "application/json" } })
+    /*throw new Error("oh, no!")*/
+    setIsLoaded(true)
     return response.json()
   }
 
   useEffect(() => {
-    fetchPokemons().then(pokemonData => updatePokemonList(pokemonData))
-    setTimeout(() => setIsLoading(false), 1000)
+    fetchPokemons()
+      .catch(() => console.log("arg"))
+      .then(pokemonData => updatePokemonList(pokemonData))
+    setTimeout(() => setIsLoading(false), 100)
   }, [])
 
   return (
@@ -46,10 +50,12 @@ export const Home = () => {
       <div className="pokedex">
         {isLoading ? (
           <Loader />
-        ) : (
-          filteredList.map(({ name, id, height, weight }) => {
+        ) : isLoaded ? (
+          pokemonList.map(({ name, id, height, weight }) => {
             return <Pokemon name={name} number={id} height={height} weight={weight} key={id} />
           })
+        ) : (
+          <p>Erreur de chargement</p>
         )}
       </div>
     </div>

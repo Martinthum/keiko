@@ -3,11 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-<<<<<<< HEAD
-    "start": "react-scripts start --openssl-legacy-provider start",
-=======
     "start": "react-scripts --openssl-legacy-provider start",
->>>>>>> 573f88f3c49b8eb63536e5ae1eba434662794693
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
